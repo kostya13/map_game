@@ -7,14 +7,14 @@ import os
 import xml.etree.ElementTree as ET
 import map_game.database
 
-Node = namedtuple('Node', 'id lot lat')
+Node = namedtuple('Node', 'id lon lat')
 Way = namedtuple('Way', 'id nds tags')
 Tag = namedtuple('Tag', 'k v')
 
 
 def _parse_node(node):
     attrs = node.attrib
-    return Node(attrs['id'], attrs['lot'], attrs['lat'])
+    return Node(attrs['id'], attrs['lon'], attrs['lat'])
 
 
 def _parse_way(way):
@@ -32,13 +32,22 @@ def _parse_way(way):
     return Way(nid, nds, tags)
 
 
-@click.command()
-@click.argument('filename')
-def load(filename: str):
+def _load(filename: str):
     if os.path.exists(filename):
         tree = ET.parse(filename)
         return tree.getroot()
     raise RuntimeError()
+
+
+@click.command()
+@click.argument('filename')
+def load(filename: str):
+    try:
+        db = map_game.database.create()
+        root = _load(filename)
+        db.save(parser(root))
+    except RuntimeError:
+        print(F'Файл {filename} не найден')
 
 
 def parser(root) -> dict:
@@ -57,9 +66,3 @@ def parser(root) -> dict:
 
 if __name__ == "__main__":
     filename = 'map.xml'
-    try:
-        db = map_game.database.create()
-        root = load(filename)
-        db.save(parser(root))
-    except RuntimeError:
-        print(F'Файл {filename} не найден')
