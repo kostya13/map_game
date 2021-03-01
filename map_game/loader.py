@@ -65,4 +65,4 @@ def parser(root) -> dict:
 
 
 if __name__ == "__main__":
-    filename = 'map.xml'
+    load()
