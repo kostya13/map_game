@@ -23,7 +23,9 @@ class DataBase:
             pickle.dump(packed_data, f)
 
     def load(self):
-        ...
+        with open('data.pickle', 'rb') as f:
+            data_new = pickle.load(f)
+        return data_new
 
     def _pack(self, data: dict):
         self._make_points(data['nodes'])
