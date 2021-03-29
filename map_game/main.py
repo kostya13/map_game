@@ -5,8 +5,8 @@ import pygame
 import map_game.database
 
 def run():
-    WIDTH = 1024  # ширина игрового окна
-    HEIGHT = 768 # высота игрового окна
+    WIDTH = 800  # ширина игрового окна
+    HEIGHT = 600 # высота игрового окна
     FPS = 30 # частота кадров в секунду
     BLACK = (0, 0, 0)
 
@@ -53,10 +53,7 @@ def run():
         pygame.display.flip()
 
 
-def convert_coord(house_data, points):
-    points_ = [points[p] for p in house_data.points]
-    screen_coord = [(p.x, p.y) for p in points_]
-    return screen_coord
+
 
 
 if __name__ == '__main__':
