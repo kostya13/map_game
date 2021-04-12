@@ -27,7 +27,7 @@ def run():
             if event.type == pygame.QUIT:
                 running = False
         # Рендеринг
-        screen.fill(BLACK)
+        screen.fill((100, 100, 100))
 
         area_sprites.draw(screen)
         house_sprites.draw(screen)
