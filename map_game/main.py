@@ -3,7 +3,7 @@
 """
 import pygame
 import map_game.database
-from map_game.graphics import Polygon, Road
+from map_game.graphics import Polygon, Road, Player
 
 def run():
     WIDTH = 800  # ширина игрового окна
@@ -17,15 +17,23 @@ def run():
     clock = pygame.time.Clock()
 
     house_sprites, area_sprites, road_sprites = init_sprites()
+    player = Player()
 
     # Цикл игры
     running = True
     while running:
         clock.tick(FPS)
+        keys = {'up': False, 'down': False, 'left': False, 'right': False}
         for event in pygame.event.get():
             # проверить закрытие окна
             if event.type == pygame.QUIT:
                 running = False
+            elif event.type == pygame.KEYDOWN:
+                  if event.key == pygame.K_DOWN:
+                    keys['down'] = True
+
+        player.move(keys)
+
         # Рендеринг
         screen.fill((100, 100, 100))
 
@@ -33,6 +41,8 @@ def run():
         house_sprites.draw(screen)
         road_sprites.draw(screen)
 
+
+        screen.blit(player.image, (10,10))
         # после отрисовки всего, переворачиваем экран
         pygame.display.flip()
 
