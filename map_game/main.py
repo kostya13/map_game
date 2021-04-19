@@ -23,16 +23,32 @@ def run():
     running = True
     while running:
         clock.tick(FPS)
-        keys = {'up': False, 'down': False, 'left': False, 'right': False}
+        keys_down = {'up': False, 'down': False, 'left': False, 'right': False}
+        keys_up = {'up': False, 'down': False, 'left': False, 'right': False}
         for event in pygame.event.get():
             # проверить закрытие окна
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
-                  if event.key == pygame.K_DOWN:
-                    keys['down'] = True
+                if event.key == pygame.K_DOWN:
+                    keys_down['down'] = True
+                elif event.key == pygame.K_UP:
+                    keys_down['up'] = True
+                elif event.key == pygame.K_LEFT:
+                    keys_down['left'] = True
+                elif event.key == pygame.K_RIGHT:
+                    keys_down['right'] = True
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_DOWN:
+                    keys_up['down'] = True
+                elif event.key == pygame.K_UP:
+                    keys_up['up'] = True
+                elif event.key == pygame.K_LEFT:
+                    keys_up['left'] = True
+                elif event.key == pygame.K_RIGHT:
+                    keys_up['right'] = True
 
-        player.move(keys)
+        player.move(keys_down, keys_up)
 
         # Рендеринг
         screen.fill((100, 100, 100))
@@ -42,7 +58,7 @@ def run():
         road_sprites.draw(screen)
 
 
-        screen.blit(player.image, (10,10))
+        screen.blit(player.image, player.rect.center)
         # после отрисовки всего, переворачиваем экран
         pygame.display.flip()
 
