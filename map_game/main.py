@@ -20,35 +20,24 @@ def run():
     player = Player()
 
     # Цикл игры
+    cursor_keys = [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT]
+    keys = {key: False for key in cursor_keys}
     running = True
     while running:
         clock.tick(FPS)
-        keys_down = {'up': False, 'down': False, 'left': False, 'right': False}
-        keys_up = {'up': False, 'down': False, 'left': False, 'right': False}
         for event in pygame.event.get():
             # проверить закрытие окна
             if event.type == pygame.QUIT:
                 running = False
+                continue
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_DOWN:
-                    keys_down['down'] = True
-                elif event.key == pygame.K_UP:
-                    keys_down['up'] = True
-                elif event.key == pygame.K_LEFT:
-                    keys_down['left'] = True
-                elif event.key == pygame.K_RIGHT:
-                    keys_down['right'] = True
+                if event.key in cursor_keys:
+                    keys[event.key] = True
             elif event.type == pygame.KEYUP:
-                if event.key == pygame.K_DOWN:
-                    keys_up['down'] = True
-                elif event.key == pygame.K_UP:
-                    keys_up['up'] = True
-                elif event.key == pygame.K_LEFT:
-                    keys_up['left'] = True
-                elif event.key == pygame.K_RIGHT:
-                    keys_up['right'] = True
+                if event.key in cursor_keys:
+                    keys[event.key] = False
 
-        player.move(keys_down, keys_up)
+        player.move(keys)
 
         # Рендеринг
         screen.fill((100, 100, 100))
