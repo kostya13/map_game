@@ -1,7 +1,8 @@
 import pygame
+import os
 
 BLACK = (0, 0, 0)
-
+WHITE = (255, 255, 255)
 
 class Ground(pygame.sprite.Sprite):
     def __init__(self, data, points):
@@ -81,3 +82,12 @@ class Player(pygame.sprite.Sprite):
             self.rect.x += self.speed * m_map[pygame.K_LEFT]
         if keys[pygame.K_RIGHT]:
             self.rect.x += self.speed * m_map[pygame.K_RIGHT]
+
+class Target(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        game_folder = os.path.dirname(__file__)
+        player_img = pygame.image.load(os.path.join(game_folder, 'target.png')).convert()
+        self.image = player_img
+        self.image.set_colorkey(WHITE)
+        self.rect = self.image.get_rect()

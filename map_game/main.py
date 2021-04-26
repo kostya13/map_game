@@ -3,7 +3,7 @@
 """
 import pygame
 import map_game.database
-from map_game.graphics import Polygon, Road, House, Player
+from map_game.graphics import Polygon, Road, House, Player, Target
 
 def run():
     WIDTH = 800  # ширина игрового окна
@@ -20,6 +20,7 @@ def run():
     player = Player()
     player_group = pygame.sprite.Group()
     player_group.add(player)
+    target = Target()
     # Цикл игры
     cursor_keys = [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT]
     keys = {key: False for key in cursor_keys}
@@ -37,6 +38,11 @@ def run():
             elif event.type == pygame.KEYUP:
                 if event.key in cursor_keys:
                     keys[event.key] = False
+            elif event.type == pygame.MOUSEMOTION:
+                mouse_pos = pygame.mouse.get_pos()
+                target.rect.center = mouse_pos
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                print("BAM!!!", pygame.mouse.get_pos())
 
         player.move(keys)
         intersection = pygame.sprite.spritecollideany(player, house_sprites,
@@ -52,7 +58,7 @@ def run():
         house_sprites.draw(screen)
         road_sprites.draw(screen)
         player_group.draw(screen)
-
+        screen.blit(target.image, target.rect)
         pygame.display.flip()
 
 
